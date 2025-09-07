@@ -1,0 +1,19 @@
+/* main.css - small visual polish */
+body { background: #f7f9fc; }
+.card.board-column { min-height: 380px; border-radius: 10px; }
+.column { min-height: 260px; padding: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); border-radius: 6px; }
+.task-card {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+  cursor: grab;
+  border-left: 4px solid transparent;
+}
+.task-card:active { cursor: grabbing; }
+.task-card:hover { transform: translateY(-2px); transition: transform .12s; }
+.task-card.dragging { opacity: 0.6; }
+.board-wrap .card-header { background: transparent; border-bottom: none; }
+@media (max-width: 768px) {
+  .column { min-height: 160px; }
+}

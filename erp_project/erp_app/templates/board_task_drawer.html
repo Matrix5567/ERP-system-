@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}{{ workspace.name }} - Board{% endblock %}
+{% block content %}
+<div class="mb-3 d-flex justify-content-between align-items-center">
+  <div>
+    <h4 class="mb-0">{{ workspace.name }}</h4>
+    <small class="text-muted">{{ space.name if space else "All Spaces" }}</small>
+  </div>
+  <div>
+    <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#createTaskModal">+ Task</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-light">Back</a>
+  </div>
+</div>
+
+<!-- Board columns: statuses come from backend; here we'll show three -->
+<div class="board-wrap">
+  <div class="row gx-3">
+    {% for column in columns %}
+    <div class="col-12 col-md-4 mb-3">
+      <div class="card board-column h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ column.name }}</strong>
+            <div class="small text-muted">{{ column.tasks.count }} tasks</div>
+          </div>
+          <div><button class="btn btn-sm btn-link">⋯</button></div>
+        </div>
+        <div class="card-body column" data-column-id="{{ column.id }}">
+          {% for task in column.tasks.all %}
+          <div class="task-card mb-2" draggable="true" data-task-id="{{ task.id }}" onclick="openTask({{ task.id }})">
+            <div class="d-flex justify-content-between">
+              <div>
+                <div class="fw-semibold">{{ task.title }}</div>
+                <div class="small text-muted">{{ task.assignees.all|join:", " }}</div>
+              </div>
+              <div class="text-end small">
+                <div>{{ task.due_date|date:"M d" }}</div>
+                <div class="badge bg-light text-dark small">{{ task.priority }}</div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-muted small">No tasks</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Task drawer (simple modal used for details) -->
+<div class="modal fade" id="taskModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-end">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalTitle">Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="taskModalBody">
+        <!-- content loaded by JS or server -->
+        <p class="text-muted">Loading…</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Task Modal (client-side quick create) -->
+<div class="modal fade" id="createTaskModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" id="createTaskForm" onsubmit="createTask(event)">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Task</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2">
+          <label class="form-label">Title</label>
+          <input class="form-control" id="newTaskTitle" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="newTaskDesc"></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Priority</label>
+          <select id="newTaskPriority" class="form-select">
+            <option>Low</option><option selected>Medium</option><option>High</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Due date</label>
+          <input class="form-control" type="date" id="newTaskDue">
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Column</label>
+          <select id="newTaskColumn" class="form-select">
+            {% for column in columns %}
+            <option value="{{ column.id }}">{{ column.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" type="submit">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // simple data attributes to help JS
+  const BOARD_API = "{% url 'api_move_task' workspace.slug %}"; // implement endpoint in backend
+</script>
+{% endblock %}

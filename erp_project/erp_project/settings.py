@@ -77,7 +77,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 
 WSGI_APPLICATION = 'erp_project.wsgi.application'
 
-#AUTH_USER_MODEL = 'erp_app.CustomUser'
+AUTH_USER_MODEL = 'erp_app.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

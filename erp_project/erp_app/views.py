@@ -14,6 +14,8 @@ def home(request):           # login page / home page
         if user is not None:
             login(request, user)
             return redirect('dashboard')
+        else:
+            return render(request, 'login.html', {'error': 'Invalid Login Credentials'})
     else:
         return render(request, 'login.html')
 

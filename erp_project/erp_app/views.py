@@ -1,13 +1,25 @@
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from . models import CustomUser
 from . validators import name_validator , image_validator , email_validator , password_validator
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
 def home(request):           # login page / home page
-    return render(request, 'login.html')
+    if request.method == 'POST':
+        login_email = request.POST.get('email')
+        login_password = request.POST.get('password')
+        user = authenticate(request, email=login_email, password=login_password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        return render(request, 'login.html')
 
+def user_logout(request):
+    logout(request)
+    return redirect(home)
 
 def signup(request):
     if request.method == 'POST':
@@ -37,3 +49,7 @@ def signup(request):
             return redirect('home')
     else:
         return render(request, 'signup.html')
+
+@login_required()
+def dashboard(request):
+    return render(request,'dashboard.html')

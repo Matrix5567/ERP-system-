@@ -6,11 +6,11 @@
     <div class="card shadow-sm">
       <div class="card-body p-4">
         <h4 class="card-title mb-3">Welcome back</h4>
-        <form method="post" action="">
+        <form method="post">
           {% csrf_token %}
           <div class="mb-3">
             <label class="form-label">Email</label>
-            <input name="username" class="form-control" type="email" required>
+            <input name="email" class="form-control" type="email" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Password</label>

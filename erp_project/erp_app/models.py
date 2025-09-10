@@ -44,6 +44,7 @@ class Workspace(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name="workspace_created",null=True)
 
     def __str__(self):
         return self.name

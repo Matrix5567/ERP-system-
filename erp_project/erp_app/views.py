@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from . models import CustomUser
-from . validators import name_validator , image_validator , email_validator , password_validator
+from . validators import name_validator , image_validator , email_validator , password_validator, \
+    workspace_name_validator
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -55,3 +56,13 @@ def signup(request):
 @login_required()
 def dashboard(request):
     return render(request,'dashboard.html')
+
+@login_required()
+def create_workspace(request):
+    if request.method == 'POST':
+        workspace_name = request.POST.get('name')
+        workspace_description = request.POST.get('description')
+        workspace_name_error = workspace_name_validator(workspace_name,request)
+        print(workspace_name_error)
+    else:
+        return render (request,'create_workspace.html')

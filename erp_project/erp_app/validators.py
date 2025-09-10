@@ -1,4 +1,4 @@
-from . models import CustomUser
+from . models import CustomUser, Workspace
 import imghdr
 import re
 
@@ -48,6 +48,17 @@ def password_validator(password1 , password2):
             return "Password must be atleast 5 long and must have one special characters"
         else:
             return None
+
+def workspace_name_validator(name,request):
+    if not name:
+        return "Workspace name cannot be empty"
+    else:
+        if len(name)<3:
+            return "Workspace name must be greater than three letters"
+        if Workspace.objects.filter(name=name,created_by=request.user).exists():
+            return "Workspace with this name already exists"
+
+
 
 
 

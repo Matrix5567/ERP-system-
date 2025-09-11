@@ -59,6 +59,11 @@ def workspace_name_validator(name,request):
             return "Workspace with this name already exists"
 
 
-
+def workspace_description_validator(description):
+    if not description:
+        return "Workspace description cannot be empty"
+    else:
+        if len(description) < 3:
+            return "Workspace description cannot be less than 3 letters"
 
 

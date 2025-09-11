@@ -12,16 +12,22 @@
           <div class="mb-3">
             <label class="form-label">Workspace Name</label>
             <input type="text" name="name" class="form-control" required>
-            {% if error.name %}
-              <p class="text-danger small">{{ error.name }}</p>
+            {% if errors.workspace_name_error %}
+              <p class="text-danger small">{{ errors.workspace_name_error }}</p>
             {% endif %}
           </div>
           <div class="mb-3">
             <label class="form-label">Description</label>
-            <textarea name="description" class="form-control" rows="3" placeholder="Optional"></textarea>
+            <textarea name="description" class="form-control" rows="3" placeholder="Optional" required></textarea>
+            {% if errors.workspace_description_error %}
+              <p class="text-danger small">{{ errors.workspace_description_error }}</p>
+            {% endif %}
           </div>
           <button class="btn btn-success w-100">Create Workspace</button>
         </form>
+        {% if success %}
+              <h3 class="text-success small">{{ success }}</h3>
+            {% endif %}
       </div>
     </div>
   </div>

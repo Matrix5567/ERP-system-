@@ -1,8 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from . models import CustomUser
+from . models import CustomUser , Workspace , Membership
 from . validators import name_validator , image_validator , email_validator , password_validator, \
-    workspace_name_validator
+    workspace_name_validator, workspace_description_validator
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -63,6 +63,20 @@ def create_workspace(request):
         workspace_name = request.POST.get('name')
         workspace_description = request.POST.get('description')
         workspace_name_error = workspace_name_validator(workspace_name,request)
-        print(workspace_name_error)
+        workspace_description_error = workspace_description_validator(workspace_description)
+        errors = {}
+        if workspace_name_error:
+            errors['workspace_name_error'] = workspace_name_error
+        if workspace_description_error:
+            errors['workspace_description_error'] = workspace_description_error
+        if errors:
+            return render (request,'create_workspace.html',{'errors':errors})
+        else:
+            workspace_creation = Workspace(name=workspace_name , description=workspace_description ,
+                                                               created_by=request.user)
+            workspace_creation.save()
+            default_membership_creation = Membership(user=request.user,workspace=workspace_creation)
+            default_membership_creation.save()
+            return render(request, 'create_workspace.html',{'success':'Workspace successfully Created'})
     else:
         return render (request,'create_workspace.html')

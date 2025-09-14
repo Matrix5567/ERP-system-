@@ -55,7 +55,8 @@ def signup(request):
 
 @login_required()
 def dashboard(request):
-    return render(request,'dashboard.html')
+    get_user_workspaces = Membership.objects.filter(user=request.user,role=Membership.OWNER)
+    return render(request,'dashboard.html',{'workspaces' : get_user_workspaces})
 
 @login_required()
 def create_workspace(request):

@@ -52,6 +52,9 @@ class Workspace(models.Model):
 
 # Membership (connects User to Workspace with a role)
 class Membership(models.Model):
+    OWNER = 'OWNER'
+    MEMBER = 'MEMBER'
+    GUEST = 'GUEST'
     ROLE_CHOICES = [
         ("OWNER", "Owner"),
         ("MEMBER", "Member"),
@@ -60,7 +63,7 @@ class Membership(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="MEMBER")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="OWNER")
     joined_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -19,11 +19,13 @@
       <div class="card-body d-flex flex-column">
         <div class="d-flex justify-content-between">
           <div>
-            <h5 class="card-title mb-1">{{ workspace.workspace.name }}</h5>
+              <a href="{% url 'board' workspace.id %}">
+            <h5 class="card-title mb-1">{{ workspace.workspace.name }}</h5> </a>
             <p class="small text-muted mb-2">{{ workspace.workspace.description|default:"No description" }}</p>
             <div class="small">
 <!--              <strong>{{ workspace.members.count }}</strong> members-->
             </div>
+
           </div>
           <div class="text-end">
 

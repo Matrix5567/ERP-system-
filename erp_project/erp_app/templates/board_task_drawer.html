@@ -4,11 +4,10 @@
 <div class="mb-3 d-flex justify-content-between align-items-center">
   <div>
     <h4 class="mb-0">{{ workspace.name }}</h4>
-    <small class="text-muted">{{ space.name if space else "All Spaces" }}</small>
   </div>
   <div>
     <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#createTaskModal">+ Task</button>
-    <a href="{% url 'dashboard' %}" class="btn btn-light">Back</a>
+<!--    <a href="{% url 'dashboard' %}" class="btn btn-light">Back</a>-->
   </div>
 </div>
 
@@ -116,8 +115,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-  // simple data attributes to help JS
-  const BOARD_API = "{% url 'api_move_task' workspace.slug %}"; // implement endpoint in backend
-</script>
+
 {% endblock %}

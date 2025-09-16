@@ -81,3 +81,8 @@ def create_workspace(request):
             return render(request, 'create_workspace.html',{'success':'Workspace successfully Created'})
     else:
         return render (request,'create_workspace.html')
+
+@login_required()
+def board(request,id):
+    print('workspace_id',id)
+    return render (request,'board_task_drawer.html')
